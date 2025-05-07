@@ -1,0 +1,46 @@
+# 核心依赖
+python-dotenv==1.0.0     # 环境变量管理
+SQLAlchemy==2.0.23       # ORM数据库操作
+PyMySQL==1.1.0           # MySQL连接驱动
+openai==0.27.8           # OpenAI API客户端
+
+# 邮件处理
+imapclient==2.3.1        # IMAP邮件获取
+email-validator==2.1.0   # 邮件地址验证
+pyzmail36==1.0.5         # 邮件解析
+
+# 文档处理
+python-docx==0.8.11      # Word文档处理
+PyMuPDF==1.23.3          # PDF处理
+pytesseract==0.3.10      # OCR文本识别
+Pillow==10.0.0           # 图像处理
+beautifulsoup4==4.12.2   # HTML解析
+lxml==4.9.3              # XML和HTML处理
+
+# 网络和API
+requests==2.31.0         # HTTP请求
+playwright==1.39.0       # 浏览器自动化
+oss2==2.18.2             # 阿里云OSS
+
+# 日期时间处理
+pytz==2023.3             # 时区处理
+
+# 并发和异步
+aiohttp==3.8.5           # 异步HTTP客户端
+
+# 日志和终端
+rich==13.5.2             # 终端美化
+tqdm==4.66.1             # 进度条
+
+# 数据处理
+pandas==2.1.1            # 数据分析和处理
+numpy==1.25.2            # 数值计算
+
+# 系统依赖说明
+# 需要系统安装 tesseract-ocr 才能使用 pytesseract
+# 对于Debian/Ubuntu: apt-get install tesseract-ocr
+# 对于macOS: brew install tesseract --with-all-languages
+# 确保安装中文语言包: tesseract-ocr-chi-sim
+#
+# 此外，还需要安装 playwright 的浏览器:
+# python -m playwright install chromium

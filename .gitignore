@@ -1,0 +1,37 @@
+# 忽略 Python 编译文件
+__pycache__/
+*.pyc
+*.pyo
+
+# 忽略日志文件
+logs/
+*.log
+
+# 忽略debug文件
+debug/
+
+# 忽略下载文件
+download/
+
+# 忽略虚拟环境
+venv/
+
+# 忽略输出文件
+output/
+
+# 忽略数据库备份
+backup/
+*.sql
+
+# 忽略旧版文件
+old-version/
+trash/
+
+# 忽略配置文件
+config/.env
+config/.env.testing
+config/company_info.txt
+config/job_desc.xlsx
+config/job_desc-V2.0.0.xlsx
+config/~$*.xlsx
+
