@@ -1,128 +1,123 @@
 # HRAgent
 
-## 项目概述
+## Project Overview
 
-HRAgent 是一套完整的招聘流程自动化解决方案，通过AI技术实现简历筛选、候选人分析和数据同步等功能，大幅提升招聘效率。系统自动处理收到的简历邮件，执行智能分析，并将结果同步至飞书等协作平台。
+HRAgent is a complete solution for automating the recruitment process. It leverages AI technology to implement features such as resume screening, candidate analysis, and data synchronization, significantly improving recruitment efficiency. The system automatically processes received resume emails, performs intelligent analysis, and synchronizes the results to collaboration platforms like Feishu (Lark).
 
-## 核心功能
+## Core Features
 
-### 1. 邮件自动获取与解析
+### 1. Automatic Email Retrieval and Parsing
 
-- 支持多邮箱配置，定时收取简历邮件
-- 自动提取简历正文和附件
-- 支持多种附件格式：PDF, DOCX, HTML等
-- 自动区分简历邮件与普通邮件
+- Supports multiple email account configurations for scheduled fetching of resume emails.
+- Automatically extracts resume body text and attachments.
+- Supports various attachment formats: PDF, DOCX, HTML, etc.
+- Automatically distinguishes between resume emails and regular emails.
 
-### 2. AI简历筛选分析
+### 2. AI Resume Screening and Analysis
 
-- 基于OpenAI API的智能简历解析
-- 自动识别应聘岗位和简历来源渠道
-- 多维度评估候选人（教育背景、技术能力、创新潜力等）
-- 自动打分并提供是否通过初筛的建议
-- 生成面试问题建议
+- Intelligent resume parsing based on the OpenAI API.
+- Automatic identification of the applied position and resume source channel.
+- Multi-dimensional candidate assessment (education background, technical skills, innovation potential, etc.).
+- Automatic scoring and suggestions for initial screening decisions.
+- Generates suggested interview questions.
 
-### 3. 数据同步与导出
+### 3. Data Synchronization and Export
 
-- 自动同步候选人数据到飞书表格
-- 支持URL编码处理，解决中文字符问题
-- 分批处理大量数据，避免API限制
+- Automatically synchronizes candidate data to Feishu (Lark) Sheets.
+- Supports URL encoding to handle Chinese characters.
+- Processes large volumes of data in batches to avoid API limitations.
 
-### 4. 系统架构
+### 4. System Architecture
 
-- 模块化设计，支持分布式部署
-- 多进程并发处理，提高效率
-- 完善的错误处理和日志记录
-- 配置灵活，支持通过环境变量调整系统参数
+- Modular design, supporting distributed deployment.
+- Multi-process concurrent processing to enhance efficiency.
+- Comprehensive error handling and logging mechanisms.
+- Flexible configuration, allowing system parameter adjustments via environment variables.
 
-## 技术栈
+## Technology Stack
 
 - Python 3.8+
 - SQLAlchemy (ORM)
 - OpenAI API (GPT-4/GPT-3.5)
-- 飞书开放平台API
-- PyMuPDF, docx (文档解析)
-- Playwright (网页爬取)
-- asyncio (异步处理)
+- Feishu (Lark) Open Platform API
+- PyMuPDF, python-docx (Document parsing)
+- Playwright (Web scraping)
+- asyncio (Asynchronous processing)
 
-## 安装部署
+## Installation and Deployment
 
-### 环境要求
+### Prerequisites
 
-- Python 3.8 或更高版本
-- MySQL 5.7 或更高版本
-- 足够的API调用额度（OpenAI, 飞书等）
+- Python 3.8 or higher
+- MySQL 5.7 or higher
+- Sufficient API call quotas (OpenAI, Feishu, etc.)
 
-### 安装步骤
+### Installation Steps
 
-1. 克隆代码仓库。
-2. 创建并激活虚拟环境
+1. Clone the code repository.
+2. Create and activate a virtual environment:
 
-```bash
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
-venv\Scripts\activate  # Windows
-```
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Linux/Mac
+   venv\Scripts\activate  # Windows
+   ```
+3. Install dependencies:
 
-3. 安装依赖包
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Configure environment variables:
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   cp config/.env.example config/.env
+   # Edit the .env file and fill in the necessary configuration items.
+   ```
 
-4. 配置环境变量
+   (Optional) You can also configure company information and job description templates:
 
-```bash
-cp config/.env.example config/.env
-# 编辑 .env 文件，填入必要的配置项
-```
+   ```bash
+   cp config/company_info.example.txt config/company_info.txt
+   cp config/job_desc.example.xlsx config/job_desc.xlsx
+   # Edit the newly created .txt and .xlsx files with your specific information.
+   ```
 
-   （可选）如果需要，你也可以配置公司信息和职位描述模板：
+   **Note for testing environment: Copy or rename `.env.testing` to `.env`**
+5. Initialize the database:
 
-```bash
-cp config/company_info.example.txt config/company_info.txt
-cp config/job_desc.example.xlsx config/job_desc.xlsx
-# 如果你使用了V2版本的职位描述模板，也请复制对应的示例文件：
-# cp config/job_desc-V2.0.0.example.xlsx config/job_desc-V2.0.0.xlsx
-# 编辑新创建的 .txt 和 .xlsx 文件，填入你的具体信息。
-```
+   ```bash
+   python code/init_db.py
+   ```
 
- **在测试环境下，注意把.env.tesing文件拷贝或重命名为.env**
+### Configuration Item Description
 
-6. 初始化数据库
+Configure the following necessary parameters in the `config/.env` file:
 
-```bash
-python code/init_db.py
-```
-
-### 配置项说明
-
-在 `config/.env` 文件中配置以下必要参数：
-
-#### 数据库配置
+#### Database Configuration
 
 ```
 DB_HOST=localhost
 DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=your_password
+DB_USER=your_db_user
+DB_PASSWORD=your_db_password
 DB_NAME=resume_db
 ```
 
-#### OpenAI配置
+#### OpenAI Configuration
 
 ```
 OPENAI_API_KEY=your_api_key
-MODEL_NAME=gpt-4  # 或 gpt-3.5-turbo
+MODEL_NAME=gpt-4  # or gpt-3.5-turbo
 ```
 
-#### 邮箱配置
+#### Email Configuration
 
 ```
 EMAIL_ACCOUNTS=imap.example.com:993:username:password
 EMAIL_FETCH_RANGE_DAYS=7
 ```
 
-#### 飞书配置
+#### Feishu (Lark) Configuration
 
 ```
 FEISHU_APP_ID=your_app_id
@@ -131,7 +126,7 @@ FEISHU_DOC_ID=your_doc_id
 FEISHU_SHEET_NAME=0
 ```
 
-#### 其他重要配置
+#### Other Important Configurations
 
 ```
 SCREENING_BATCH_SIZE=50
@@ -141,90 +136,87 @@ EMAIL_CHECK_INTERVAL=300
 EXPORT_INTERVAL=300
 ```
 
-## 运行系统
+## Running the System
 
-### 启动完整系统
+### Start the Complete System
 
 ```bash
 python code/workflow_manager.py
 ```
 
-### 单独运行各模块
+### Run Individual Modules
 
-邮件获取:
+Email Fetching:
 
 ```bash
 python code/email_fetching.py
 ```
 
-简历筛选:
+Resume Screening:
 
 ```bash
 python code/screening.py
 ```
 
-数据同步导出:
+Data Synchronization and Export:
 
 ```bash
 python code/sync_and_export.py
 ```
 
-## 系统扩展
+## System Extension
 
-### 添加新的简历源
+### Adding a New Resume Source
 
-修改 `resume_fetcher.py` 文件，添加新的简历网站处理逻辑。例如添加猎聘网支持:
+Modify the `resume_fetcher.py` file to add logic for handling new resume websites. For example, to add support for Liepin:
 
 ```python
 async def _extract_liepin_resume(page, url):
-    # 实现猎聘网简历提取逻辑
+    # Implement Liepin resume extraction logic
     # ...
 ```
 
-### 处理需要登录的网站
+### Handling Websites Requiring Login
 
-对于需要登录的网站，在 `SITE_LOGIN_INFO` 字典中添加配置:
+For websites that require login, add configuration to the `SITE_LOGIN_INFO` dictionary:
 
 ```python
 SITE_LOGIN_INFO = {
     "liepin.com": {
         "username": os.environ.get("LIEPIN_USERNAME", ""),
         "password": os.environ.get("LIEPIN_PASSWORD", ""),
-        # ...其他配置项
+        # ...other configuration items
     }
 }
 ```
 
-## 常见问题
+## FAQ (Frequently Asked Questions)
 
-1. **邮件获取失败**
+1. **Email Fetching Fails**
+   * Check if the email configuration is correct.
+   * Confirm that IMAP access is enabled for the email account.
+   * Check network connection and firewall settings.
+2. **AI Analysis is Inaccurate**
+   * Try using a more advanced model (e.g., GPT-4).
+   * Adjust the `MAX_TOKEN` parameter to allow processing of longer resume texts.
+   * Modify the prompt to improve analysis accuracy.
+3. **Feishu (Lark) Synchronization Fails**
+   * Check if Feishu application permissions are configured correctly.
+   * Confirm that `DOC_ID` and `SHEET_NAME` are correct.
+   * Check the logs for detailed error information.
 
-   - 检查邮箱配置是否正确
-   - 确认邮箱开启了IMAP访问
-   - 检查网络连接和防火墙设置
-2. **AI分析不准确**
+## Logging and Monitoring
 
-   - 尝试使用更高级的模型 (如 GPT-4)
-   - 调整 MAX_TOKEN 参数允许处理更长的简历文本
-   - 修改 prompt 以提高分析精度
-3. **飞书同步失败**
+System logs are saved in the `logs` directory by default. Log level and rotation policy can be adjusted through the configuration file.
 
-   - 检查飞书应用权限是否配置正确
-   - 确认 DOC_ID 和 SHEET_NAME 是否正确
-   - 查看日志了解详细错误信息
+## Contribution Guidelines
 
-## 日志和监控
+Pull Requests or Issues are welcome to improve the system. Before submitting code, please ensure:
 
-系统日志默认保存在 `logs` 目录下，可通过配置文件调整日志级别和轮转策略。
+1. All test cases pass.
+2. Adherence to the existing code style.
+3. Necessary documentation and comments are added.
 
-## 贡献指南
+## License
 
-欢迎提交 Pull Request 或 Issue 来改进系统。在提交代码前，请确保:
-
-1. 通过所有测试用例
-2. 遵循既有的代码风格
-3. 添加必要的文档和注释
-
-## 许可证 (License)
-
-本软件根据 [MIT 许可证](LICENSE) 授权。
+This software is licensed under the [MIT License](LICENSE).
